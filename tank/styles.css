@@ -1,0 +1,417 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+}
+
+#aquarium {
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to bottom, #001a33 0%, #003d66 50%, #004d7a 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Bọt nước */
+.bubble {
+    position: absolute;
+    bottom: -50px;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.3));
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: rise linear infinite;
+}
+
+@keyframes rise {
+    to {
+        bottom: 110vh;
+        opacity: 0;
+    }
+}
+
+/* Thảm thực vật */
+.seaweed {
+    position: absolute;
+    bottom: 0;
+    width: 30px;
+    background: linear-gradient(to top, #1a4d2e 0%, #2d7a4f 50%, #4a9d6f 100%);
+    border-radius: 15px 15px 0 0;
+    transform-origin: bottom center;
+    animation: sway ease-in-out infinite;
+}
+
+@keyframes sway {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+}
+
+/* Cá */
+.fish {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    animation: swim linear infinite;
+}
+
+.fish-body {
+    width: 60px;
+    height: 30px;
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    border-radius: 50%;
+    position: relative;
+}
+
+.fish-tail {
+    width: 0;
+    height: 0;
+    border-left: 25px solid #ff6b6b;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    position: absolute;
+    right: -20px;
+}
+
+.fish-eye {
+    width: 8px;
+    height: 8px;
+    background: white;
+    border: 2px solid black;
+    border-radius: 50%;
+    position: absolute;
+    top: 8px;
+    left: 10px;
+}
+
+@keyframes swim {
+     0% { 
+        left: 0;                        /* Bắt đầu từ cạnh trái */
+        transform: scaleX(-1); 
+    }
+    49% { 
+        left: calc(100% - 200px);       /* Gần chạm mép phải */
+        transform: scaleX(-1); 
+    }
+    50% { 
+        left: calc(100% - 200px);       /* Quay đầu tại mép phải */
+        transform: scaleX(1); 
+    }
+    99% { 
+        left: 0;                        /* Gần chạm mép trái */
+        transform: scaleX(1); 
+    }
+    100% { 
+        left: 0;                        /* Quay đầu tại mép trái để lặp lại */
+        transform: scaleX(-1); 
+    }
+}
+
+/* Cá mập */
+.shark {
+    position: absolute;
+    animation: sharkSwim linear infinite;
+    /* Thêm transition để di chuyển theo chuột mượt hơn */
+    transition: transform 0.3s ease-out, top 0.3s ease-out, left 0.3s ease-out;
+}
+
+/* Lớp này sẽ được thêm bằng JS để dừng animation bơi tự động */
+.shark.controlled {
+    animation-play-state: paused;
+}
+
+.shark-body {
+    width: 120px;
+    height: 50px;
+    background: linear-gradient(135deg, #4a5568, #718096);
+    border-radius: 60% 40% 40% 60%;
+    position: relative;
+}
+
+.shark-fin {
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 35px solid #4a5568;
+    position: absolute;
+    top: -25px;
+    left: 30px;
+}
+
+.shark-tail {
+    width: 0;
+    height: 0;
+    border-left: 40px solid #4a5568;
+    border-top: 25px solid transparent;
+    border-bottom: 25px solid transparent;
+    position: absolute;
+    right: -35px;
+    top: 0;
+}
+
+.shark-eye {
+    width: 10px;
+    height: 10px;
+    background: black;
+    border-radius: 50%;
+    position: absolute;
+    top: 15px;
+    left: 20px;
+}
+
+@keyframes sharkSwim {
+     0% { 
+        left: 0;                        /* Bắt đầu từ cạnh trái */
+        transform: scaleX(-1); 
+    }
+    49% { 
+        left: calc(100% - 180px);       /* Gần chạm mép phải */
+        transform: scaleX(-1); 
+    }
+    50% { 
+        left: calc(100% - 180px);       /* Quay đầu tại mép phải */
+        transform: scaleX(1); 
+    }
+    99% { 
+        left: 0;                        /* Gần chạm mép trái */
+        transform: scaleX(1); 
+    }
+    100% { 
+        left: 0;                        /* Quay đầu tại mép trái để lặp lại */
+        transform: scaleX(-1); 
+    }
+}
+
+/* Rùa */
+.turtle {
+    position: absolute;
+    animation: turtleSwim linear infinite;
+}
+
+.turtle-shell {
+    width: 80px;
+    height: 60px;
+    background: linear-gradient(135deg, #8b6f47, #a0826d);
+    border-radius: 50%;
+    position: relative;
+    border: 3px solid #6b5436;
+}
+
+.turtle-head {
+    width: 35px;
+    height: 25px;
+    background: #7a9b76;
+    border-radius: 50% 50% 30% 30%;
+    position: absolute;
+    left: -25px;
+    top: 15px;
+}
+
+.turtle-flipper {
+    width: 30px;
+    height: 15px;
+    background: #7a9b76;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.turtle-flipper.front-left {
+    left: -15px;
+    top: 10px;
+    transform: rotate(-30deg);
+}
+
+.turtle-flipper.back-left {
+    left: -10px;
+    bottom: 10px;
+    transform: rotate(30deg);
+}
+
+.turtle-flipper.front-right {
+    right: -15px;
+    top: 10px;
+    transform: rotate(30deg);
+}
+
+.turtle-flipper.back-right {
+    right: -10px;
+    bottom: 10px;
+    transform: rotate(-30deg);
+}
+
+@keyframes turtleSwim {
+     0% { 
+        left: 0;                         /* Bắt đầu từ cạnh trái */
+        transform: scaleX(-1); 
+    }
+    49% { 
+        left: calc(100% - 120px);       /* Gần chạm mép phải */
+        transform: scaleX(-1); 
+    }
+    50% { 
+        left: calc(100% - 120px);       /* Quay đầu tại mép phải */
+        transform: scaleX(1); 
+    }
+    99% { 
+        left: 0;                        /* Gần chạm mép trái */
+        transform: scaleX(1); 
+    }
+    100% { 
+        left: 0;                        /* Quay đầu tại mép trái để lặp lại */
+        transform: scaleX(-1); 
+    }
+}
+
+/* Thợ lặn */
+.diver {
+    position: absolute;
+    animation: dive ease-in-out infinite;
+}
+
+.diver-body {
+    width: 30px;
+    height: 50px;
+    background: linear-gradient(135deg, #2c5282, #3182ce);
+    border-radius: 15px;
+    position: relative;
+}
+
+.diver-head {
+    width: 25px;
+    height: 25px;
+    background: #fed7aa;
+    border-radius: 50%;
+    position: absolute;
+    top: -20px;
+    left: 2.5px;
+    border: 3px solid #333;
+}
+
+.diver-tank {
+    width: 20px;
+    height: 35px;
+    background: #718096;
+    border-radius: 5px;
+    position: absolute;
+    right: -15px;
+    top: 5px;
+}
+
+.diver-flipper {
+    width: 25px;
+    height: 10px;
+    background: #fbbf24;
+    position: absolute;
+    bottom: -8px;
+    border-radius: 0 0 10px 10px;
+}
+
+.diver-flipper.left {
+    left: 0;
+}
+
+.diver-flipper.right {
+    right: 0;
+}
+
+@keyframes dive {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-100px); }
+}
+
+/* Điều khiển */
+.controls {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px 30px;
+    border-radius: 15px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    z-index: 1000;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.control-group label {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.speed-control {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+button {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+button:hover {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+.speed-display {
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    min-width: 50px;
+    text-align: center;
+}
+
+#musicBtn {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+#musicBtn:hover {
+    background: linear-gradient(135deg, #059669, #047857);
+}
+
+#musicBtn.playing {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+
+@media(max-width:1260px){
+    head{
+        position: absolute;
+        display: none;
+        top:100%;
+        right: 0;
+        width: 40%;
+        border-left: 3px solid #b74b4b;
+        border-bottom: 3px solid #b74b4b;
+        border-bottom-left-radius: 2rem;
+        padding: 1rem solid;
+        background-color: #161616;
+        border-top: 0.1rem solid rgba(0,0,0,0.1);
+        
+       
+    }}
